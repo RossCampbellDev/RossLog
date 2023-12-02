@@ -3,6 +3,8 @@ import os
 from dotenv import load_dotenv
 from flask import Blueprint, Flask
 
+from .models.user_model import User
+
 load_dotenv()
 
 app = Flask(__name__)

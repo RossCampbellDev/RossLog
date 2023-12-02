@@ -1,7 +1,7 @@
 import os
 
 from dotenv import load_dotenv
-from pymongo import MongoCLient
+from pymongo import MongoClient
 
 load_dotenv()
 MONGO_CONN_STRING = os.environ.get('MONGO_CONN_STRING')
@@ -10,7 +10,7 @@ MONGO_PASS = os.environ.get('DB_PASS')
 MONGO_CONN_STRING = MONGO_CONN_STRING.replace('<username>', MONGO_USER)
 MONGO_CONN_STRING = MONGO_CONN_STRING.replace('<password>', MONGO_USER)
 
-db_client = MongoCLient(MONGO_CONN_STRING)
+db_client = MongoClient(MONGO_CONN_STRING)
 
-client = MongoCLient(MONGO_CONN_STRING)
+client = MongoClient(MONGO_CONN_STRING)
 db = client["log-db"]
