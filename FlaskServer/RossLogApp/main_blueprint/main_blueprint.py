@@ -7,23 +7,28 @@ main_blueprint = Blueprint("main_blueprint", __name__, static_folder="static", t
 # HOME
 @main_blueprint.route("/", methods=["GET", "POST"])
 def home():
-    # do a login screen
     # if not current_user
-    # return render_template("login.html")
-    return render_template("login.html")    # todo change to home.html when login tested
+    #   return redirect("login", 302)
+    return render_template("home.html")    # todo change to home.html when login tested
 
 
 # LOGIN
-@main_blueprint.route("/login", methods=["POST"])
+@main_blueprint.route("/login", methods=["GET", "POST"])
 def login():
+    if request.method == "GET":
+        return render_template("login.html")
+    
     form_data = request.form
     username = form_data.get('user')
     password = form_data.get('pass')
-    print(username)
-    print(User.get_by_username(username))
 
+    if not User.check_pass(username, password):
+        # flash wrong user
+        return redirect("login", 302)
+    
     # flask-login stuff
-    return render_template("home.html")
+
+    return render_template("home.html", username=username)  # TODO: replace with current user when implemented flask login
 
 
 # Retrieve log(s)

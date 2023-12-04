@@ -7,7 +7,7 @@ from pymongo.errors import PyMongoError
 
 from ..extensions import db
 
-user_collection = db["user-collection"]
+user_collection = db["UserCollection"]
 
 class User:
     def __init__(self, username, passhash, _id=""):
