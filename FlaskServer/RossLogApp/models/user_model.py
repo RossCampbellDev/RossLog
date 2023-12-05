@@ -1,6 +1,7 @@
 import datetime
 
 from bson.objectid import ObjectId
+from flask_login import UserMixin
 # import bcrypt
 from passlib.hash import pbkdf2_sha256
 from pymongo.errors import PyMongoError
@@ -9,11 +10,14 @@ from ..extensions import db
 
 user_collection = db["UserCollection"]
 
-class User:
-    def __init__(self, username, passhash, _id=""):
-        self._id = _id
+class User(UserMixin):
+    def __init__(self, username, passhash, id=""):
+        self.id = id
         self.username = username
-        self.passhash = passhash
+        self.passhash = passhash # TODO: do we actually ever need to store this?
+
+    def __repr__(self):
+        return f'{self.id} - {self.username}'
 
 
     def debug(self):
@@ -31,26 +35,31 @@ class User:
         }
 
         try:
-            self._id = user_collection.insert_one(user_data).inserted_id
+            self.id = user_collection.insert_one(user_data).insertedid
         except PyMongoError as e:
             print(f'ERROR DURING INSERT: {str(e)}')
 
-        return self._id
+        return self.id
     
 
-    def get_id(self):
-        return str(self._id)
+    def getid(self):
+        return str(self.id)
 
 
     # def update(self):
     #     user_data = {
     #         'username': self.username
     #     }
-    #     return user_collection.update_one({'_id': ObjectId(self._id)}, {'$set': user_data})
+    #     return user_collection.update_one({'id': ObjectId(self.id)}, {'$set': user_data})
 
 
     def delete(self):
-        return user_collection.delete_one({'_id': ObjectId(self._id)})
+        return user_collection.delete_one({'id': ObjectId(self.id)})
+    
+
+    @staticmethod
+    def to_object(user):
+        return User(id=user["_id"], username=user["username"], passhash=user["passhash"])
 
 
     @staticmethod
@@ -59,19 +68,19 @@ class User:
     
 
     @staticmethod
-    def get_by_id(id):
+    def get_by_id(id: int):
+        # return user_collection.find_one({'id': ObjectId(id)})
         return user_collection.find_one({'_id': ObjectId(id)})
 
 
     @staticmethod
     def get_by_username(username):
         return user_collection.find_one({'username': username})
-    
 
     @staticmethod
     def get_instance(user_dict):
         this_user = User(
-            _id=user_dict["_id"],
+            id=user_dict["id"],
             username=user_dict["username"],
             passhash=user_dict["passhash"]
         )
@@ -81,6 +90,7 @@ class User:
     @staticmethod
     def check_pass(test_username, test_password):
         user = User.get_by_username(test_username)
+        print(user)
         if user:
             # return bcrypt.checkpw(test_password.encode('utf-8'), user["passhash"])
             return pbkdf2_sha256.verify(test_password.encode('utf-8'), user["passhash"])

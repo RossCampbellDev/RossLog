@@ -1,15 +1,16 @@
-from flask import Blueprint, jsonify, redirect, render_template, request
+from flask import Blueprint, redirect, render_template, request
+from flask_login import current_user, login_required, login_user, logout_user
 
 from ..models.user_model import User
 
 main_blueprint = Blueprint("main_blueprint", __name__, static_folder="static", template_folder="templates")
 
 # HOME
-@main_blueprint.route("/", methods=["GET", "POST"])
+@main_blueprint.route("/", methods=["GET"])
 def home():
-    # if not current_user
-    #   return redirect("login", 302)
-    return render_template("home.html")    # todo change to home.html when login tested
+    if not current_user.is_authenticated:
+      return redirect("/login", 302)
+    return render_template("home.html")
 
 
 # LOGIN
@@ -22,13 +23,28 @@ def login():
     username = form_data.get('user')
     password = form_data.get('pass')
 
-    if not User.check_pass(username, password):
+    user = User.get_by_username(username)
+
+    if not user:
+        print("ERRROR WRONG USER")
         # flash wrong user
         return redirect("login", 302)
     
-    # flask-login stuff
+    if not User.check_pass(username, password):
+        # flash wrong pw
+        print("ERRROR WRONG PW")
+        return redirect("login", 302)
+    
+    login_user(User.to_object(user))
 
-    return render_template("home.html", username=username)  # TODO: replace with current user when implemented flask login
+    return render_template("home.html", current_user=current_user)
+
+
+# LOGOUT
+@main_blueprint.route("/logout", methods=["GET", "POST"])
+def logout():
+    logout_user()
+    return redirect("/login", 302)
 
 
 # Retrieve log(s)
