@@ -76,15 +76,6 @@ class User(UserMixin):
     @staticmethod
     def get_by_username(username):
         return user_collection.find_one({'username': username})
-
-    @staticmethod
-    def get_instance(user_dict):
-        this_user = User(
-            id=user_dict["id"],
-            username=user_dict["username"],
-            passhash=user_dict["passhash"]
-        )
-        return this_user
     
     
     @staticmethod

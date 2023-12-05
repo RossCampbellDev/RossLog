@@ -1,6 +1,7 @@
 from flask import Blueprint, redirect, render_template, request
 from flask_login import current_user, login_required, login_user, logout_user
 
+from ..models.entry_model import Entry
 from ..models.user_model import User
 
 main_blueprint = Blueprint("main_blueprint", __name__, static_folder="static", template_folder="templates")
@@ -37,7 +38,8 @@ def login():
     
     login_user(User.to_object(user))
 
-    return render_template("home.html", current_user=current_user)
+    # return render_template("home.html", current_user=current_user)
+    return redirect("/", 302)
 
 
 # LOGOUT
@@ -50,14 +52,19 @@ def logout():
 # Retrieve log(s)
 @main_blueprint.route("/retrieve/", methods=["GET", "POST"])
 def retrieve():
-    get_entries = request.json
+    if request.method == "GET":
+        entries = Entry.get_all()
 
-    entries = {}
+    criteria = request.data
+    if criteria is not None:
+        print(criteria)
+        # entries = {}
 
     # mongo db query
+
     # build dictionary of returned results, display
 
-    return render_template("read.html", entries=entries)
+    return render_template("home.html", entries=entries)
 
 
 # add new entry

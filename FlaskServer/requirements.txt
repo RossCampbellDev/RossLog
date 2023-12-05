@@ -1,4 +1,5 @@
-Flask
-flask-bcrypt
-python-dotenv
-pymongo
+Flask==1.1.2
+flask_login==0.6.3
+passlib==1.7.4
+pymongo==4.6.1
+python-dotenv==1.0.0

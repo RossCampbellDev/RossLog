@@ -16,8 +16,15 @@ The RossLog is a simple application to allow me to do daily logs in the style of
 
 ### DB
 - LogEntry
-    - datestamp
-    - title,subtitle,body?
+    - datestamp,title,body,tags
+
+### web front end
+- log in screen
+- home screen
+    - list of dates (defaults to last week?)
+        - can click on a day to see all entries for that day?
+    - filter list
+    - write new entry
 
 ### Docker
 remember to add the env vars such as FLASK APP
