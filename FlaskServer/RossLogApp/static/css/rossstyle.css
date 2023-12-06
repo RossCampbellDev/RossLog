@@ -1,6 +1,7 @@
 html {
     color: rgb(255, 184, 31);
-    font-size: 16pt; 
+    font-size: 14pt;
+    font-family: Courier New; font-size: 12pt;
 }
 
 .main-body {
@@ -42,17 +43,62 @@ input[type=submit]:hover {
 }
 
 input:auto-fill { }
-input[type=text], input[type=password] {
+input[type=text], input[type=password], input[type=date] {
+    padding-bottom: 8px; padding-top: 8px;
     background-color: #181818;
     color: #FFF;
     margin-top: 10px;
     margin-bottom: 10px;
+    border: none;
     border-bottom: 1px solid rgb(255, 184, 31);
-    font-size: 16pt; text-align: center;
+    font-size: 14pt; text-align: center;
+    background: none;
 }
+
+textarea {
+    width: 100%;
+    font-size: 12pt;
+    background-color: #202020;
+    border: 0;
+    color: rgb(255,184,31);
+}
+
+textarea:focus, textarea:hover, textarea::selection {
+    border: 0;
+}
+
 
 a {
     decoration: none;
     color: #FFF;
     font-style: italic;
+}
+
+table {
+    border-collapse: collapse;
+}
+tr {
+    border-bottom: 1px solid #333;
+}
+tr:hover {
+    background-color: #222; cursor: pointer;
+}
+
+td {
+    overflow: hidden; white-space: nowrap; text-align: left;
+}
+
+.write-entry-div {
+    width: auto; height: auto; text-align: center;
+    padding: 20px; border-bottom: 1px solid #555; margin-bottom: 8px;
+}
+
+.list-entries-div {
+    width: auto; height: auto; text-align: center;
+    padding: 20px;
+}
+
+.search-entries-div {
+    width: auto; height: auto; text-align: center;
+    padding: 20px; border-bottom: 1px solid #555; margin-bottom: 8px;
 }

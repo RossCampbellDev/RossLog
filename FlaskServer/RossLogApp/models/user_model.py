@@ -81,7 +81,6 @@ class User(UserMixin):
     @staticmethod
     def check_pass(test_username, test_password):
         user = User.get_by_username(test_username)
-        print(user)
         if user:
             # return bcrypt.checkpw(test_password.encode('utf-8'), user["passhash"])
             return pbkdf2_sha256.verify(test_password.encode('utf-8'), user["passhash"])

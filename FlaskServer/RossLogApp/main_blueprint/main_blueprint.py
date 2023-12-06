@@ -11,7 +11,9 @@ main_blueprint = Blueprint("main_blueprint", __name__, static_folder="static", t
 def home():
     if not current_user.is_authenticated:
       return redirect("/login", 302)
-    return render_template("home.html")
+    
+    entries = Entry.get_all()
+    return render_template("home.html", entries=entries)
 
 
 # LOGIN
@@ -30,7 +32,7 @@ def login():
         print("ERRROR WRONG USER")
         # flash wrong user
         return redirect("login", 302)
-    
+ 
     if not User.check_pass(username, password):
         # flash wrong pw
         print("ERRROR WRONG PW")
@@ -55,7 +57,7 @@ def retrieve():
     if request.method == "GET":
         entries = Entry.get_all()
 
-    criteria = request.data
+    criteria = request.form
     if criteria is not None:
         print(criteria)
         # entries = {}
@@ -71,12 +73,14 @@ def retrieve():
 @main_blueprint.route("/write", methods=["GET", "POST"])
 def write():
     if request.method == "GET":
-        return render_template("write.html")
+        return redirect("/", 302)
     
-    new_entry = request.json
+    d = request.form
+    new_entry = Entry(title=d["entry-title"], body=d["entry-body"], tags=d["entry-tags"])
+    id = new_entry.save()
 
-    # write to mongo db
-    # confirm entry added
-    # present success screen
+    if id is None:
+        print("didnt save")
+        # flash
 
-    return render_template("write.html") # , new_post
+    return redirect("/", 302)
