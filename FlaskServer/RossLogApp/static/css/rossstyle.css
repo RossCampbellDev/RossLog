@@ -73,8 +73,7 @@ textarea:focus, textarea:hover, textarea::selection {
 
 a {
     decoration: none;
-    color: #FFF;
-    font-style: italic;
+    color: rgb(255, 184, 31);
 }
 
 table {
@@ -93,7 +92,7 @@ td {
 
 .write-entry-div {
     width: auto; height: auto; text-align: center;
-    padding: 20px; border-bottom: 1px solid #555; margin-bottom: 8px;
+    padding: 20px; padding-top: 2px; border-bottom: 1px solid #555; margin-bottom: 8px;
 }
 
 .list-entries-div {
@@ -107,7 +106,7 @@ td {
 }
 
 .log-select {
-    width: 800px;
+    width: 100%;
     background: none;
     color: rgb(255,184,31);
     border: none; 
@@ -121,4 +120,17 @@ select::selection {
 .entry-list-date {
     font-style: italic;
     color: #FFF;
+}
+
+.go-home a {
+    decoration: none;
+}
+.go-home {
+    text-align: center;
+    height: auto; width: 100%;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+.go-home:hover {
+    background-color: #444;
 }
