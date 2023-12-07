@@ -128,7 +128,7 @@ class Entry():
     
 
     @staticmethod
-    def get_by_id(id: int):
+    def get_by_id(id: str):
         # return entry_collection.find_one({'id': ObjectId(id)})
         return entry_collection.find_one({'_id': ObjectId(id)})
 

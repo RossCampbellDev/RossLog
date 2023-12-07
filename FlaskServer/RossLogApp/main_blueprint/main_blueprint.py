@@ -51,20 +51,13 @@ def logout():
     return redirect("/login", 302)
 
 
-# Retrieve log(s)
-@main_blueprint.route("/retrieve/", methods=["GET", "POST"])
-def retrieve():
+# Read log(s)
+@main_blueprint.route("/read/<entry_id>", methods=["GET", "POST"])
+def retrieve(entry_id: str):
     if request.method == "GET":
         entries = Entry.get_all()
 
-    criteria = request.form
-    if criteria is not None:
-        print(criteria)
-        # entries = {}
-
-    # mongo db query
-
-    # build dictionary of returned results, display
+    entries = Entry.get_by_id(entry_id)
 
     return render_template("home.html", entries=entries)
 

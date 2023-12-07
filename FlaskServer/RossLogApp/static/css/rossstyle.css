@@ -1,7 +1,7 @@
 html {
     color: rgb(255, 184, 31);
     font-size: 14pt;
-    font-family: Courier New; font-size: 12pt;
+    font-family: Courier New !important; font-size: 12pt !important;
 }
 
 .main-body {
@@ -35,6 +35,7 @@ input[type=submit] {
     padding: 4px; padding-left: 20px; padding-right: 20px;
     border: 1px solid rgb(255, 184, 31);
     font-size: 18pt;
+    font-family: Courier New !important;
 }
 input[type=submit]:hover {
     background-color: rgb(255, 184, 31);
@@ -51,8 +52,9 @@ input[type=text], input[type=password], input[type=date] {
     margin-bottom: 10px;
     border: none;
     border-bottom: 1px solid rgb(255, 184, 31);
-    font-size: 14pt; text-align: center;
+    font-size: 12pt; text-align: center;
     background: none;
+    font-family: Courier New !important; font-size: 12pt !important;
 }
 
 textarea {
@@ -61,6 +63,7 @@ textarea {
     background-color: #202020;
     border: 0;
     color: rgb(255,184,31);
+    font-family: Courier New !important; font-size: 12pt !important;
 }
 
 textarea:focus, textarea:hover, textarea::selection {
@@ -101,4 +104,21 @@ td {
 .search-entries-div {
     width: auto; height: auto; text-align: center;
     padding: 20px; border-bottom: 1px solid #555; margin-bottom: 8px;
+}
+
+.log-select {
+    width: 800px;
+    background: none;
+    color: rgb(255,184,31);
+    border: none; 
+    font-family: Courier New; font-size: 10pt;
+}
+
+select::selection {
+    background-color: #000;
+}
+
+.entry-list-date {
+    font-style: italic;
+    color: #FFF;
 }
