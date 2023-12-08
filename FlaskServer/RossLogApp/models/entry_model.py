@@ -136,3 +136,8 @@ class Entry():
     @staticmethod
     def get_by_entryname(entryname: str):
         return entry_collection.find_one({'entryname': entryname})
+    
+    
+    @staticmethod
+    def get_by_criteria(self, criteria: dict):
+        return entry_collection.find(criteria) if criteria else self.get_all()

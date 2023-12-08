@@ -8,12 +8,14 @@ main_blueprint = Blueprint("main_blueprint", __name__, static_folder="static", t
 
 # HOME
 @main_blueprint.route("/", methods=["GET"])
-def home():
+@main_blueprint.route("/<entry_id>", methods=["GET"])
+def home(entry_id=None):
     if not current_user.is_authenticated:
       return redirect("/login", 302)
     
+    read_entry = Entry.get_by_id(entry_id) if entry_id is not None else None
     entries = Entry.get_all()
-    return render_template("home.html", entries=entries)
+    return render_template("home.html", entries=entries, read_entry=read_entry)
 
 
 # LOGIN
@@ -51,13 +53,45 @@ def logout():
     return redirect("/login", 302)
 
 
-# Read log(s)
-@main_blueprint.route("/read/<entry_id>", methods=["GET", "POST"])
-def retrieve(entry_id: str):
+# Retrieve log(s)
+@main_blueprint.route("/search/", methods=["GET", "POST"])
+def search():
     if request.method == "GET":
         entries = Entry.get_all()
+    else:
+        form_data = request.form
+        if form_data is not None:
+            criteria = {}
+            start_date = form_data.get("start-date")
+            end_date = form_data.get("end-date")
+            title = form_data.get("search-title")
+            body = form_data.get("search-body")
+            tags = form_data.get("search-tags")
 
-    entries = Entry.get_by_id(entry_id)
+            if start_date and end_date:
+                criteria["datestamp"] = {'$gte': start_date, '$lte': end_date}
+            elif start_date:
+                criteria["datetsamp"] = {'$gte': start_date}
+            elif end_date:
+                criteria["datetsamp"] = {'$lte': end_date}
+
+            if title:
+                criteria["title"] = {'$regex': title}
+            if body:
+                criteria["body"] = {'$regex': body} if body else None
+            if tags:
+                tags = [tag.strip() for tag in tags.split(',')]
+                criteria["tags"] = {'$elemMatch': {'$in': tags}}
+            
+            entries = Entry.get_by_criteria(criteria)
+            print(criteria)
+            print(entries)
+        else:
+            entries = Entry.get_all()
+
+        # mongo db query
+
+        # build dictionary of returned results, display
 
     return render_template("home.html", entries=entries)
 

@@ -63,7 +63,7 @@ textarea {
     background-color: #202020;
     border: 0;
     color: rgb(255,184,31);
-    font-family: Courier New !important; font-size: 12pt !important;
+    font-family: Courier New !important; font-size: 12pt !important; padding: 4px; resize: vertical;
 }
 
 textarea:focus, textarea:hover, textarea::selection {

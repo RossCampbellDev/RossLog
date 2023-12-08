@@ -1,9 +1,16 @@
 <!-- title, body, tags -->
 <div class="write-entry-div">
     <form method="POST" action="/write">
-        <input type=text name="entry-title" id="entry-title" placeholder="Entry Title" /><br/>
-        <textarea name="entry-body" id="entry-body" rows="3" placeholder="Entry Body" style="width:80%; float: left;"></textarea>
-        <textarea name="entry-tags" id="entry-tags" rows="3" placeholder="Entry Tags" style="width:18%; float: right;"></textarea><br/>
+        {% if not read_entry %}
+            <input type=text name="entry-title" id="entry-title" placeholder="Entry Title" /><br/>
+            <textarea name="entry-body" id="entry-body" rows="4" placeholder="Entry Body" style="width:80%; float: left;"></textarea>
+            <textarea name="entry-tags" id="entry-tags" rows="4" placeholder="Entry Tags" style="width:18%; float: right;"></textarea><br/>
+        {% else %}
+            <input type=hidden name="entry-id" id="entry-id" value{{ read_entry._id }} />
+            <input type=text name="entry-title" id="entry-title" placeholder="Entry Title" value="{{ read_entry.title }}" /><br/>
+            <textarea name="entry-body" id="entry-body" rows="4" placeholder="Entry Body" style="width:80%; float: left;">{{ read_entry.body }}</textarea>
+            <textarea name="entry-tags" id="entry-tags" rows="4" placeholder="Entry Tags" style="width:18%; float: right;">{{ read_entry.tags }}</textarea><br/>
+        {% endif %}
         <input type="submit" value="Save" />
     </form>
 </div>
