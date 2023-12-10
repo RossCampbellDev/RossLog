@@ -122,6 +122,10 @@ select::selection {
     color: #FFF;
 }
 
+.ross-log-title {
+	font-size: 36pt; font-weight: bold; text-align: center;
+    color: rgb(255,184,31);
+}
 .go-home a {
     decoration: none;
 }
@@ -130,6 +134,7 @@ select::selection {
     height: auto; width: 100%;
     padding-top: 2px;
     padding-bottom: 2px;
+	cursor: pointer;
 }
 .go-home:hover {
     background-color: #444;

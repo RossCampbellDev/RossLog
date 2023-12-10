@@ -1,18 +1,18 @@
 <div class="list-entries-div">
     <table cellpadding=5 border="0">
     <!-- {% for entry in entries %}
-        <tr>
-            <td>{{ entry["datestamp"] }}</td>
-            <td><b>{{ entry["title"] }}</b></td>
-            <td style="min-width: 60%; overflow: hidden;">{{ entry["body"] }}</td>
-            <td>{{ entry["tags"] }}</td>
-        </tr>    
+	 <tr>
+		<td>{{ entry["datestamp"] }}</td>
+		<td><b>{{ entry["title"] }}</b></td>
+		<td style="min-width: 60%; overflow: hidden;">{{ entry["body"] }}</td>
+		<td>{{ entry["tags"] }}</td>
+	 </tr>    
     {% endfor %} -->
     
     <select class="log-select" size="20">
-        {% for entry in entries %}
-            <option ondblclick=read_entry(this) id={{ entry["_id"] }} ><span class="entry-list-date">{{ entry["datestamp"] }}</span> - {{ entry["title"] }}</option>
-        {% endfor %}
+	 {% for entry in entries %}
+		<option ondblclick=read_entry(this) id={{ entry["_id"] }} ><span class="entry-list-date">{{ entry["datestamp"] }}</span> - {{ entry["title"] }}</option>
+	 {% endfor %}
     </select>
     </table>
 </div>
