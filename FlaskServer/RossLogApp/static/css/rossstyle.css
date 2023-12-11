@@ -1,15 +1,17 @@
 html {
-    color: rgb(255, 184, 31);
+    color: rgb(31, 255, 184);
     font-size: 14pt;
     font-family: Courier New !important; font-size: 12pt !important;
 }
 
 .main-body {
-    background-color:#181818;;
+    background-color:#181818;
+	overflow-x: hidden;
 }
 
 .main-content {
-    position: absolute; height: 100%; width: 1200px; left: 50%; margin-left: -600px; overflow: auto;
+    height: 100%; max-width: 1200px; min-width: 800px; margin: auto;
+	overflow-x: hidden;
 }
 
 .logout-box {
@@ -25,20 +27,18 @@ html {
     transform: translateY(-50%);
 }
 
-input:-internal-autofill-selected { }
-
 input[type=submit] {
     background-color: #181818;
     color: #FFF;
     margin-top: 10px;
     margin-bottom: 10px;
     padding: 4px; padding-left: 20px; padding-right: 20px;
-    border: 1px solid rgb(255, 184, 31);
+    border: 1px solid rgb(31, 255, 184);
     font-size: 18pt;
     font-family: Courier New !important;
 }
 input[type=submit]:hover {
-    background-color: rgb(255, 184, 31);
+    background-color: rgb(31, 255, 184);
     color: #000;
     cursor: pointer;
 }
@@ -51,7 +51,7 @@ input[type=text], input[type=password], input[type=date] {
     margin-top: 10px;
     margin-bottom: 10px;
     border: none;
-    border-bottom: 1px solid rgb(255, 184, 31);
+    border-bottom: 1px solid rgb(31, 255, 184);
     font-size: 12pt; text-align: center;
     background: none;
     font-family: Courier New !important; font-size: 12pt !important;
@@ -62,7 +62,7 @@ textarea {
     font-size: 12pt;
     background-color: #202020;
     border: 0;
-    color: rgb(255,184,31);
+    color: rgb(31, 255, 184);
     font-family: Courier New !important; font-size: 12pt !important; padding: 4px; resize: vertical;
 }
 
@@ -72,8 +72,7 @@ textarea:focus, textarea:hover, textarea::selection {
 
 
 a {
-    decoration: none;
-    color: rgb(255, 184, 31);
+    color: rgb(31, 255, 184);
 }
 
 table {
@@ -90,25 +89,40 @@ td {
     overflow: hidden; white-space: nowrap; text-align: left;
 }
 
+#entry-tags {
+	resize: none !important;
+}
+
 .write-entry-div {
-    width: auto; height: auto; text-align: center;
+	display: inline-block;
+    width: 100%; height: auto; text-align: center;
     padding: 20px; padding-top: 2px; border-bottom: 1px solid #555; margin-bottom: 8px;
+	overflow: hidden;
+}
+.write-entry-div:hover {
+	background-color: #111;
 }
 
 .list-entries-div {
     width: auto; height: auto; text-align: center;
     padding: 20px;
 }
+.list-entries-div:hover {
+	background-color: #111;
+}
 
 .search-entries-div {
     width: auto; height: auto; text-align: center;
     padding: 20px; border-bottom: 1px solid #555; margin-bottom: 8px;
 }
+.search-entries-div:hover {
+	background-color: #111;
+}
 
 .log-select {
     width: 100%;
     background: none;
-    color: rgb(255,184,31);
+    color: rgb(31, 255, 184);
     border: none; 
     font-family: Courier New; font-size: 10pt;
 }
@@ -124,7 +138,11 @@ select::selection {
 
 .ross-log-title {
 	font-size: 36pt; font-weight: bold; text-align: center;
-    color: rgb(255,184,31);
+    color: rgb(31, 255, 184);
+}
+.flash-msg-box {
+	font-size: 12pt; text-align: center;
+	color: #FFFF55;
 }
 .go-home a {
     decoration: none;

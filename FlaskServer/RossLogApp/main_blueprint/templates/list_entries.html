@@ -11,7 +11,7 @@
     
     <select class="log-select" size="20">
 	 {% for entry in entries %}
-		<option ondblclick=read_entry(this) id={{ entry["_id"] }} ><span class="entry-list-date">{{ entry["datestamp"] }}</span> - {{ entry["title"] }}</option>
+		<option ondblclick=read_entry(this) id={{ entry["_id"] }} ><span class="entry-list-date">{{ entry["datestamp"] }}</span> | {{ entry["title"] }} | {{ entry["body"] }}</option>
 	 {% endfor %}
     </select>
     </table>

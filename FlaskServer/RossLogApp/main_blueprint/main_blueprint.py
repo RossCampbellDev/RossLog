@@ -1,8 +1,11 @@
-from flask import Blueprint, redirect, render_template, request
+from flask import Blueprint, flash, redirect, render_template, request, session
 from flask_login import current_user, login_required, login_user, logout_user
 
+from ..log_factory import get_logger
 from ..models.entry_model import Entry
 from ..models.user_model import User
+
+logger = get_logger(__name__)
 
 main_blueprint = Blueprint("main_blueprint", __name__, static_folder="static", template_folder="templates")
 
@@ -13,8 +16,10 @@ def home(entry_id=None):
 	if not current_user.is_authenticated:
 		return redirect("/login", 302)
 	
-	read_entry = Entry.get_by_id(entry_id) if entry_id is not None else None
+	read_entry = Entry.to_presentation_object(Entry.get_by_id(entry_id)) if entry_id is not None else None
 	entries = Entry.get_all()
+	for entry in entries:
+		entry["datestamp"] = entry["datestamp"].strftime("%Y-%m-%d %H:%M")
 	return render_template("home.html", entries=entries, read_entry=read_entry)
 
 
@@ -32,12 +37,11 @@ def login():
 
 	if not user:
 		print("ERRROR WRONG USER")
-		# flash wrong user
+		flash_msg("INVALID LOGIN CREDENTIALS")
 		return redirect("login", 302)
  
 	if not User.check_pass(username, password):
-		# flash wrong pw
-		print("ERRROR WRONG PW")
+		flash_msg("INVALID LOGIN CREDENTIALS")
 		return redirect("login", 302)
 	
 	login_user(User.to_object(user))
@@ -50,6 +54,7 @@ def login():
 @main_blueprint.route("/logout", methods=["GET", "POST"])
 def logout():
 	logout_user()
+	flash_msg("Logout successful!")
 	return redirect("/login", 302)
 
 
@@ -82,16 +87,16 @@ def search():
 			if tags:
 				tags = [tag.strip() for tag in tags.split(',')]
 				criteria["tags"] = {'$elemMatch': {'$in': tags}}
-			
+
 			entries = Entry.get_by_criteria(criteria)
-			print(criteria)
 			print(entries)
-		else:
+
+		if not form_data or not entries:
+			flash_msg('Search returned no results...')
 			entries = Entry.get_all()
 
-		# mongo db query
-
-		# build dictionary of returned results, display
+		for entry in entries:
+			entry["datestamp"] = entry["datestamp"].strftime("%Y-%m-%d %H:%M")
 
 	return render_template("home.html", entries=entries)
 
@@ -102,18 +107,51 @@ def write():
 	if request.method == "GET":
 		return redirect("/", 302)
 	
+	errors = []
 	d = request.form
-	entry_id = d["entry-id"]
-	if entry_id:
-		existing_entry = Entry.to_object(Entry.get_by_id(entry_id))
-		if existing_entry:
-			existing_entry.update(entry_id)
-	else:
-		new_entry = Entry(title=d["entry-title"], body=d["entry-body"], tags=d["entry-tags"])
-		entry_id = new_entry.save()
+	new_title=d.get("entry-title")
+	new_body = d.get("entry-body")
+	new_tags = d.get("entry-tags").replace("\r\n", ",").replace("\n", ",").replace(", ", ",").replace(",,", ",")
+	entry_id = d.get("entry-id")
+
+	if not new_title:
+		errors.append("missing title")
+	if not new_body:
+		errors.append("missing body text")
+
+	if errors:
+		flash_msg("Error writing entry: " + ", ".join(errors))
+	
+	if not errors:
+		if entry_id:
+			existing_entry = Entry.to_object(Entry.get_by_id(entry_id))
+			if existing_entry:
+				existing_entry.title = new_title
+				existing_entry.body = new_body 
+				existing_entry.tags = new_tags if new_tags else []
+				existing_entry.update(entry_id)
+		else:		
+			new_entry = Entry(
+					title=new_title, body=new_body, tags=new_tags
+				)
+			entry_id = new_entry.save()
 
 	if entry_id is None:
-		print("didnt save")
-		# flash
+		flash_msg("didnt save")
+	else:
+		flash_msg("Entry saved!")
 
 	return redirect("/", 302)
+
+
+@main_blueprint.route("/delete/<entry_id>", methods=["GET", "POST"])
+def delete(entry_id: str):
+	to_delete_entry = Entry.to_object(Entry.get_by_id(entry_id))
+	to_delete_entry.delete()
+	flash_msg("Entry Deleted!")
+	return redirect("/", 302)
+
+
+def flash_msg(msg: str=""):
+	# session['_flashes'].clear()
+	flash(msg)

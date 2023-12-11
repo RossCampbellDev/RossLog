@@ -1,3 +1,4 @@
 /.vscode
 FlaskServer/venv/
 FlaskServer/.env
+FlaskServer/RossLogApp/logging/

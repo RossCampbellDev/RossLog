@@ -8,7 +8,7 @@ from ..extensions import db
 entry_collection = db["EntryCollection"]
 
 class Entry():
-	def __init__(self, id=None, datestamp=datetime.now().strftime("%Y-%m-%d %H:%M") , title="No Title", body="No Body", tags=""):
+	def __init__(self, id=None, datestamp=datetime.now() , title="No Title", body="No Body", tags=""):
 		self.id = id
 		self.title = title
 		self.body = body
@@ -26,10 +26,10 @@ class Entry():
 
 	def save(self):
 		entry_data = {
-		'title': self.title,
-		'body': self.body,
-		'tags': self.tags,
-		'datestamp': datetime.now().strftime("%Y-%m-%d %H:%M") if self.datestamp is None else self.datestamp
+			'title': self.title,
+			'body': self.body,
+			'tags': self.tags,
+			'datestamp': self.datestamp # datetime.now().strftime("%Y-%m-%d %H:%M") if self.datestamp is None else 
 		}
 
 		try:
@@ -58,12 +58,13 @@ class Entry():
 			'body': self.body,
 			'tags': self.tags
 		}
-		return entry_collection.update_one({'id': ObjectId(id)}, {'$set': entry_data})
+		print(entry_data)
+		return entry_collection.update_one({'_id': ObjectId(id)}, {'$set': entry_data})
 	
 
 	@staticmethod
 	def get_all():
-		return list(entry_collection.find().sort('datestamp', -1))	# descending datestamp order
+		return list(entry_collection.find().sort('datestamp', -1))
 
 
 	@staticmethod
@@ -136,10 +137,15 @@ class Entry():
 	
 	
 	@staticmethod
-	def get_by_criteria(self, criteria: dict):
-		return entry_collection.find(criteria) if criteria else self.get_all()
+	def get_by_criteria(criteria: dict=None):
+		return list(entry_collection.find(criteria)) if criteria else None
 	
 
 	@staticmethod
 	def to_object(entry: dict):
 		return Entry(id=entry["_id"], title=entry["title"], body=entry["body"], tags=entry["tags"], datestamp=entry["datestamp"])
+	
+
+	@staticmethod
+	def to_presentation_object(entry: dict):
+		return Entry(id=entry["_id"], title=entry["title"], body=entry["body"], tags=entry["tags"], datestamp=entry["datestamp"].strftime("%Y-%m-%d %H:%M"))

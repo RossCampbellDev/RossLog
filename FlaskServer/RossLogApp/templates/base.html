@@ -10,7 +10,17 @@
     <script src="{{ url_for('static', filename='javascript/funcs.js') }}"></script>
 </head>
 <body class="main-body">
-    <a href="/"></a><div class="go-home"><span class="ross-log-title">RossLog</span></div></a>
+    <a href="/" style="text-decoration: none;">
+	<div class="go-home">
+		<span class="ross-log-title">RossLog</span>
+		<div class="flash-msg-box">
+			{% with messages = get_flashed_messages() %}
+				{% for message in messages %}
+					{{ message }}
+				{% endfor %}
+			{% endwith %}
+		</div>
+	</div></a>
     <div class="main-content">{% block mainbody%}{% endblock %}</div>
 
     <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
