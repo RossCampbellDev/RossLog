@@ -1,4 +1,3 @@
-
 SECRET_KEY="blah"
 MONGO_CONN_STRING="mongodb+srv://<username>:<password>@rosslogdb.t8odrck.mongodb.net/?retryWrites=true&w=majority"
 DB_USER="rosslogadmin"

@@ -138,7 +138,8 @@ class Entry():
 	
 	@staticmethod
 	def get_by_criteria(criteria: dict=None):
-		return list(entry_collection.find(criteria)) if criteria else None
+		print(criteria)
+		return list(entry_collection.find(criteria).sort('datestamp', -1)) if criteria else None
 	
 
 	@staticmethod
@@ -148,4 +149,4 @@ class Entry():
 
 	@staticmethod
 	def to_presentation_object(entry: dict):
-		return Entry(id=entry["_id"], title=entry["title"], body=entry["body"], tags=entry["tags"], datestamp=entry["datestamp"].strftime("%Y-%m-%d %H:%M"))
+		return Entry(id=entry["_id"], title=entry["title"], body=entry["body"], tags=', '.join(entry["tags"]), datestamp=entry["datestamp"].strftime("%Y-%m-%d %H:%M"))

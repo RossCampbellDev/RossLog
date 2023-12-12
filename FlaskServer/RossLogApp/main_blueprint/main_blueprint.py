@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from flask import Blueprint, flash, redirect, render_template, request, session
 from flask_login import current_user, login_required, login_user, logout_user
 
@@ -20,6 +22,7 @@ def home(entry_id=None):
 	entries = Entry.get_all()
 	for entry in entries:
 		entry["datestamp"] = entry["datestamp"].strftime("%Y-%m-%d %H:%M")
+		print("hi")
 	return render_template("home.html", entries=entries, read_entry=read_entry)
 
 
@@ -72,24 +75,28 @@ def search():
 			title = form_data.get("search-title")
 			body = form_data.get("search-body")
 			tags = form_data.get("search-tags")
+			
+			if start_date:
+				start_date = datetime.strptime(start_date, '%Y-%m-%d')
+			if end_date:
+				end_date = datetime.strptime(end_date, '%Y-%m-%d')
 
 			if start_date and end_date:
 				criteria["datestamp"] = {'$gte': start_date, '$lte': end_date}
 			elif start_date:
-				criteria["datetsamp"] = {'$gte': start_date}
+				criteria["datestamp"] = {'$gte': start_date}
 			elif end_date:
-				criteria["datetsamp"] = {'$lte': end_date}
+				criteria["datestamp"] = {'$lte': end_date}
 
 			if title:
 				criteria["title"] = {'$regex': title}
 			if body:
 				criteria["body"] = {'$regex': body} if body else None
 			if tags:
-				tags = [tag.strip() for tag in tags.split(',')]
+				tags = [tag.strip() for tag in tags.strip().split(',')]
 				criteria["tags"] = {'$elemMatch': {'$in': tags}}
 
 			entries = Entry.get_by_criteria(criteria)
-			print(entries)
 
 		if not form_data or not entries:
 			flash_msg('Search returned no results...')
@@ -109,10 +116,10 @@ def write():
 	
 	errors = []
 	d = request.form
-	new_title=d.get("entry-title")
-	new_body = d.get("entry-body")
-	new_tags = d.get("entry-tags").replace("\r\n", ",").replace("\n", ",").replace(", ", ",").replace(",,", ",")
-	entry_id = d.get("entry-id")
+	new_title = d.get("entry-title")
+	new_body  = d.get("entry-body")
+	new_tags  = d.get("entry-tags").replace("\r\n", ",").replace("\n", ",").replace(", ", ",").replace(",,", ",").split(",")
+	entry_id  = d.get("entry-id")
 
 	if not new_title:
 		errors.append("missing title")

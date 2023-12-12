@@ -1,7 +1,12 @@
 html {
     color: rgb(31, 255, 184);
-    font-size: 14pt;
+    font-size: 12pt;
     font-family: Courier New !important; font-size: 12pt !important;
+}
+
+::selection {
+	color: #000;
+	background: rgb(31, 255, 184);
 }
 
 .main-body {
@@ -10,7 +15,7 @@ html {
 }
 
 .main-content {
-    height: 100%; max-width: 1200px; min-width: 800px; margin: auto;
+    height: 100%; width: 1200px; max-width: 1200px; min-width: 800px; margin: auto;
 	overflow-x: hidden;
 }
 
@@ -22,9 +27,7 @@ html {
     width: 100%; text-align: center;
     margin: 0;
     position: absolute;
-    top: 50%;
-    -ms-transform: translateY(-50%);
-    transform: translateY(-50%);
+    top: 40%; left: 0;
 }
 
 input[type=submit] {
@@ -34,7 +37,7 @@ input[type=submit] {
     margin-bottom: 10px;
     padding: 4px; padding-left: 20px; padding-right: 20px;
     border: 1px solid rgb(31, 255, 184);
-    font-size: 18pt;
+    font-size: 14pt;
     font-family: Courier New !important;
 }
 input[type=submit]:hover {
@@ -106,6 +109,7 @@ td {
 .list-entries-div {
     width: auto; height: auto; text-align: center;
     padding: 20px;
+	background-color: #111;
 }
 .list-entries-div:hover {
 	background-color: #111;
@@ -121,7 +125,7 @@ td {
 
 .log-select {
     width: 100%;
-    background: none;
+	background-color: #111;
     color: rgb(31, 255, 184);
     border: none; 
     font-family: Courier New; font-size: 10pt;

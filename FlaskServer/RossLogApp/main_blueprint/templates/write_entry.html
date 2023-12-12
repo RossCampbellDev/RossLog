@@ -2,18 +2,20 @@
 <div class="write-entry-div">
     <form method="POST" action="/write">
 		{% if not read_entry %}
-			<input type=text name="entry-title" id="entry-title" placeholder="Entry Title" /><br/>
+			<input style="width: 70%;" type=text name="entry-title" id="entry-title" placeholder="Entry Title" style="margin-left: -40px;"/><br/>
 			<textarea name="entry-body" id="entry-body" rows="4" placeholder="Entry Body" style="width:80%; float: left;"></textarea>
 			<textarea name="entry-tags" id="entry-tags" rows="4" placeholder="Entry Tags" style="width:16%; float: left; margin-left: 8px;"></textarea><br/>
+			<input type="submit" value="Save" style="margin-left: -40px;" />
 		{% else %}
 			<input type=hidden name="entry-id" id="entry-id" value="{{ read_entry.id }}" />
-			<input type=text name="entry-title" id="entry-title" placeholder="Entry Title" value="{{ read_entry.title }}" /><br/>
+			<input style="width: 70%;" type=text name="entry-title" id="entry-title" placeholder="Entry Title" value="{{ read_entry.title }}" style="margin-left: -40px;" /><br/>
 			<textarea name="entry-body" id="entry-body" rows="4" placeholder="Entry Body" style="width:80%; float: left;">{{ read_entry.body }}</textarea>
 			<textarea name="entry-tags" id="entry-tags" rows="4" placeholder="Entry Tags" style="width:16%; float: left; margin-left: 8px;">{{ read_entry.tags }}</textarea><br/>
+			<input type="submit" value="Update" style="margin-left: -40px;" />
 		{% endif %}
-		<input type="submit" value="Save" />
     </form>
 	{% if read_entry %}
-		<input type="submit" value="Delete" onclick="delete_entry('{{ read_entry.id }}')" />
+		<input type="submit" value="Delete" onclick="delete_entry('{{ read_entry.id }}')" style="margin-left: -40px;" />
+		<input type="submit" value="Return" onclick="window.location.href='/'" style="margin-left: 0px;" />
 	{% endif %}
 </div>
