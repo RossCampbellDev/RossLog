@@ -4,4 +4,3 @@ DB_USER="rosslogadmin"
 DB_PASS="DarkFireWillNotAvailYou"
 FLASK_RUN_PORT=5002
 FLASK_APP=RossLogApp
-FLASK_ENV=development

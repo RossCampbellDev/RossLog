@@ -10,4 +10,4 @@ RUN pip install --progress-bar off -r requirements.txt
 
 EXPOSE 5002
 
-CMD ["flask", "run", "--debug"]
+CMD ["flask", "run", "--host=0.0.0.0"]
