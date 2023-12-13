@@ -3,6 +3,6 @@ kind: ConfigMap
 metadata:
   name: ross-log-app-config
 data:
-  HOST: 0.0.0.0
-  FLASK_RUN_PORT: 5002
-    FLASK_APP: RossLogApp
+  HOST: "0.0.0.0"
+  FLASK_RUN_PORT: "5002"
+  FLASK_APP: "RossLogApp"
