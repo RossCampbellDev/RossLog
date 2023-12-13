@@ -22,7 +22,7 @@ def home(entry_id=None):
 	entries = Entry.get_all()
 	for entry in entries:
 		entry["datestamp"] = entry["datestamp"].strftime("%Y-%m-%d %H:%M")
-		print("hi")
+		
 	return render_template("home.html", entries=entries, read_entry=read_entry)
 
 

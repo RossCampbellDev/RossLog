@@ -1,11 +1,13 @@
 FROM python:3.13.0a2-bookworm
 
-WORKDIR /RossLogApp
+WORKDIR /RossLog
 
-COPY . /RossLogApp/
+COPY . /RossLog/
 
-RUN pip install -r requirements.txt
+COPY .flaskenv /RossLog/
 
-EXPOSE 80
+RUN pip install --progress-bar off -r requirements.txt
 
-CMD ["flask", "run"]
+EXPOSE 5002
+
+CMD ["flask", "run", "--debug"]

@@ -1,0 +1,5 @@
+sudo dpkg -i ./containerd.io_amd64_x86_64.deb \
+  ./docker-ce_amd64_x86_64.deb \
+  ./docker-ce-cli_amd64_x86_64.deb \
+  ./docker-buildx-plugin_amd64_x86_64.deb \
+  ./docker-compose-plugin_amd64_x86_64.deb
