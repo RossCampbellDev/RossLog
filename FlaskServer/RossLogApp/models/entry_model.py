@@ -138,7 +138,6 @@ class Entry():
 	
 	@staticmethod
 	def get_by_criteria(criteria: dict=None):
-		print(criteria)
 		return list(entry_collection.find(criteria).sort('datestamp', -1)) if criteria else None
 	
 

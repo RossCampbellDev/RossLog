@@ -1,3 +1,4 @@
+import json
 from datetime import datetime
 
 from flask import Blueprint, flash, redirect, render_template, request, session
@@ -14,6 +15,7 @@ main_blueprint = Blueprint("main_blueprint", __name__, static_folder="static", t
 # HOME
 @main_blueprint.route("/", methods=["GET"])
 @main_blueprint.route("/<entry_id>", methods=["GET"])
+@login_required
 def home(entry_id=None):
 	if not current_user.is_authenticated:
 		return redirect("/login", 302)
@@ -55,6 +57,7 @@ def login():
 
 # LOGOUT
 @main_blueprint.route("/logout", methods=["GET", "POST"])
+@login_required
 def logout():
 	logout_user()
 	flash_msg("Logout successful!")
@@ -63,6 +66,7 @@ def logout():
 
 # Retrieve log(s)
 @main_blueprint.route("/search/", methods=["GET", "POST"])
+@login_required
 def search():
 	if request.method == "GET":
 		entries = Entry.get_all()
@@ -106,6 +110,57 @@ def search():
 			entry["datestamp"] = entry["datestamp"].strftime("%Y-%m-%d %H:%M")
 
 	return render_template("home.html", entries=entries)
+
+
+# for CLI API
+@main_blueprint.route("/search/json/", methods=["GET", "POST"])
+def search_json():
+	if request.method == "GET":
+		entries = Entry.get_all()
+	else:
+		form_data = request.form
+		print(form_data)
+		if form_data is not None:
+			criteria = {}
+			start_date = form_data.get("start-date")
+			end_date = form_data.get("end-date")
+			title = form_data.get("search-title")
+			body = form_data.get("search-body")
+			tags = form_data.get("search-tags")
+
+			if title:
+				criteria["title"] = {'$regex': title}
+			if body:
+				criteria["body"] = {'$regex': body} if body else None
+			if tags:
+				tags = [tag.strip() for tag in tags.strip().split(',')]
+				criteria["tags"] = {'$elemMatch': {'$in': tags}}
+			
+			if start_date:
+				start_date = datetime.strptime(start_date, '%Y-%m-%d')
+			if end_date:
+				end_date = datetime.strptime(end_date, '%Y-%m-%d')
+
+			if start_date and end_date:
+				criteria["datestamp"] = {'$gte': start_date, '$lte': end_date}
+			elif start_date:
+				criteria["datestamp"] = {'$gte': start_date}
+			elif end_date:
+				criteria["datestamp"] = {'$lte': end_date}
+
+			entries = Entry.get_by_criteria(criteria)
+
+		if not form_data or not entries:
+			flash_msg('Search returned no results...')
+			entries = Entry.get_all()
+
+	for entry in entries:
+		entry["_id"] = None	# dont send IDs to API users
+		entry["datestamp"] = entry["datestamp"].strftime("%Y-%m-%d %H:%M")
+
+	json_data = json.dumps(entries)
+
+	return entries
 
 
 # add new entry
@@ -152,6 +207,7 @@ def write():
 
 
 @main_blueprint.route("/delete/<entry_id>", methods=["GET", "POST"])
+@login_required
 def delete(entry_id: str):
 	to_delete_entry = Entry.to_object(Entry.get_by_id(entry_id))
 	to_delete_entry.delete()
