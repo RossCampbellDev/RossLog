@@ -1,0 +1,56 @@
+Name:             ross-log-app-84587f6fcc-cbsll
+Namespace:        default
+Priority:         0
+Service Account:  default
+Node:             minikube/192.168.49.2
+Start Time:       Thu, 14 Dec 2023 15:28:39 +0000
+Labels:           app=ross-log-app
+                  pod-template-hash=84587f6fcc
+Annotations:      <none>
+Status:           Running
+IP:               10.244.0.25
+IPs:
+  IP:           10.244.0.25
+Controlled By:  ReplicaSet/ross-log-app-84587f6fcc
+Containers:
+  ross-log-container:
+    Container ID:   docker://04363a079a12a1a0fc4216f6688d941ae40abdd91bd82daa3487906692e6bb81
+    Image:          docker.io/druidofbritain/ross_log:0.1
+    Image ID:       docker-pullable://druidofbritain/ross_log@sha256:979af2a19d3cf34f945bbde05edcd4f50ecf69f77c1c01f7e273e5a7d49e2bb9
+    Port:           5002/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Thu, 14 Dec 2023 15:32:13 +0000
+    Ready:          True
+    Restart Count:  0
+    Environment Variables from:
+      ross-log-app-config  ConfigMap  Optional: false
+      ross-log-app-secret  Secret     Optional: false
+    Environment:           <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-6xx6w (ro)
+Conditions:
+  Type              Status
+  Initialized       True 
+  Ready             True 
+  ContainersReady   True 
+  PodScheduled      True 
+Volumes:
+  kube-api-access-6xx6w:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    ConfigMapOptional:       <nil>
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason     Age   From               Message
+  ----    ------     ----  ----               -------
+  Normal  Scheduled  24m   default-scheduler  Successfully assigned default/ross-log-app-84587f6fcc-cbsll to minikube
+  Normal  Pulling    24m   kubelet            Pulling image "docker.io/druidofbritain/ross_log:0.1"
+  Normal  Pulled     21m   kubelet            Successfully pulled image "docker.io/druidofbritain/ross_log:0.1" in 3m33.214139802s (3m33.214181599s including waiting)
+  Normal  Created    21m   kubelet            Created container ross-log-container
+  Normal  Started    21m   kubelet            Started container ross-log-container

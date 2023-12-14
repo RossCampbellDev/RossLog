@@ -14,11 +14,13 @@ spec:
     spec:
       containers:
       - name: ross-log-container
-        image: ross_log_app:latest
-        ports:
-        - containerPort: 5002
+        image: docker.io/druidofbritain/ross_log:0.1
         envFrom:
           - configMapRef:
-            name: ross-log-app-config
+              name: ross-log-app-config
           - secretRef:
-            name: ross-log-app-secret
+              name: ross-log-app-secret
+        ports:
+        - containerPort: 5002
+      imagePullSecrets:
+      - name: regcred

@@ -1,0 +1,5 @@
+kubectl create secret docker-registry regcred \
+--docker-username=druidofbritain \
+--docker-password=772Defender! \
+--docker-email=rcampbell_sec@protonmail.com
+
