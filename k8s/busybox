@@ -1,0 +1,2 @@
+#!/usr/bin/bash
+kubectl run ross-test-pod -n ross-log-app -it --rm --image=busybox -- /bin/sh

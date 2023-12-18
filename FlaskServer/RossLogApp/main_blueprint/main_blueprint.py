@@ -192,16 +192,13 @@ def write():
 				existing_entry.body = new_body 
 				existing_entry.tags = new_tags if new_tags else []
 				existing_entry.update(entry_id)
+				flash_msg("Entry updated!")
 		else:		
 			new_entry = Entry(
 					title=new_title, body=new_body, tags=new_tags
 				)
 			entry_id = new_entry.save()
-
-	if entry_id is None:
-		flash_msg("didnt save")
-	else:
-		flash_msg("Entry saved!")
+			flash_msg("Entry saved!")
 
 	return redirect("/", 302)
 
