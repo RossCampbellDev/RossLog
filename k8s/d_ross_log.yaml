@@ -1,8 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ross-log-app
-  namespace: ross-log-app
+  name: ross-log-app-deployment
 spec:
   replicas: 1
   selector:
@@ -14,7 +13,7 @@ spec:
         app: ross-log-app
     spec:
       containers:
-      - name: ross-log-container
+      - name: ross-log
         image: docker.io/druidofbritain/ross_log:0.1
         envFrom:
           - configMapRef:
