@@ -13,19 +13,30 @@ logger = get_logger(__name__)
 main_blueprint = Blueprint("main_blueprint", __name__, static_folder="static", template_folder="templates")
 
 # HOME
-@main_blueprint.route("/", methods=["GET"])
-@main_blueprint.route("/<entry_id>", methods=["GET"])
+@main_blueprint.route("/", methods=["GET", "POST"])
+@main_blueprint.route("/<entry_id>", methods=["GET", "POST"])
 @login_required
-def home(entry_id=None):
+def home(entry_id=None):    
+	if request.path == '/favicon.ico':	# well this is dumb
+		return '', 204
 	if not current_user.is_authenticated:
 		return redirect("/login", 302)
 	
 	read_entry = Entry.to_presentation_object(Entry.get_by_id(entry_id)) if entry_id is not None else None
-	entries = Entry.get_all()
+	
+	# entries = Entry.get_all()
+	selected_month = None
+	if request.method == "POST":
+		selected_month = request.form.get("select-month")
+	if selected_month is None:
+		this_month = f'0{datetime.now().month}'
+		selected_month = f'{datetime.now().year}-{this_month[-2:]}'
+
+	entries = Entry.get_by_month(selected_month)
 	for entry in entries:
 		entry["datestamp"] = entry["datestamp"].strftime("%Y-%m-%d %H:%M")
 		
-	return render_template("home.html", entries=entries, read_entry=read_entry)
+	return render_template("home.html", entries=entries, read_entry=read_entry, selected_month=selected_month)
 
 
 # LOGIN

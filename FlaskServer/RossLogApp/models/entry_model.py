@@ -2,6 +2,7 @@ from datetime import datetime
 
 from bson.objectid import ObjectId
 from pymongo.errors import PyMongoError
+from datetime import datetime
 
 from ..extensions import db
 
@@ -139,6 +140,21 @@ class Entry():
 	@staticmethod
 	def get_by_criteria(criteria: dict=None):
 		return list(entry_collection.find(criteria).sort('datestamp', -1)) if criteria else None
+	
+
+	@staticmethod
+	def get_by_month(criteria: str):
+		year = int(criteria.split('-')[0])
+		month = int(criteria.split('-')[1])
+		date_start = datetime(year, month, 1)
+		date_end = datetime(year, month+1, 1) if month < 12 else datetime(year+1, 1, 1)
+
+		return list(entry_collection.find({
+			'datestamp': {
+				'$gte': date_start,
+				'$lte': date_end
+			}
+		}).sort('datestamp', -1))
 	
 
 	@staticmethod

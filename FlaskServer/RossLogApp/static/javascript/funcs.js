@@ -4,3 +4,6 @@ function read_entry(option) {
 function delete_entry(id) {
     window.location.href="/delete/" + id;
 }
+function searchMonth() {
+	document.getElementById("select-month-form").submit();
+}

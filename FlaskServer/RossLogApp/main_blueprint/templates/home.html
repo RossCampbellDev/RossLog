@@ -4,8 +4,9 @@
 {% if current_user %}
     {% include 'write_entry.html' %}
     {% include 'search_entries.html' %}
+	{% include 'select_month.html' %}
     {% if entries %}
-	 {% include 'list_entries.html' %}
+		{% include 'list_entries.html' %}
     {% endif %}
 
     <div class="logout-box"><a href="/logout">Log out</a> {{ current_user["username"] }}</div>
